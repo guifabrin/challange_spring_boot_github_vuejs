@@ -1,0 +1,55 @@
+body {
+    padding-top: 70px;
+}
+
+.img-profile {
+    width: 100%;
+    padding: 25px;
+}
+
+.organizations {
+    display: flex;
+}
+
+.organizations img {
+    width: 32px;
+    height: 32px;
+}
+
+#gmap_canvas {
+    width: 100%;
+}
+
+.card {
+    margin-bottom: 15px;
+}
+
+img.contributions {
+    width: 100%;
+}
+
+#loading {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("https://i.stack.imgur.com/MnyxU.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.partial {
+    margin-top: 15px;
+}
+
+article {
+    padding: 15px;
+}
+
+article img {
+    max-width: 100%;
+}

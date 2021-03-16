@@ -1,0 +1,105 @@
+<div class="partial">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">Github Example</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    </ul>
+                    <form class="d-flex">
+                        <select class="form-control me-1" @change="switchTheme($event)">
+                            <option value="true">Dark</option>
+                            <option value="false">Light</option>
+                        </select>
+                        <input class="form-control me-1" type="search" placeholder="Search" aria-label="Search"
+                            name="username" v-model="username">
+                        <button class="btn btn-outline-success" type="button" v-on:click="getUser">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" v-if="user">
+        <div class="row">
+            <div class="col-lg-3">
+                <img :src="user.avatar_url" :alt="user.name" class="rounded-circle img-profile">
+                <h2>{{user.name}}</h2>
+                <h3>{{user.login}}</h3>
+                <a class="github-button" :href="'https://github.com/'+user.login" target="_blank">
+                    Follow @{{user.login}}
+                </a>
+                <hr>
+                <div>
+                    <div>
+                        <i class="fa fa-users"></i>
+                        <span>{{user.followers}} followers</span>
+                    </div>
+                    <div>
+                        <i class="fa fa-users"></i>
+                        <span>{{user.following}} following</span>
+                    </div>
+                </div>
+                <div>
+                    <hr>
+                    <div v-if="user.location">
+                        <h4>Location</h4>
+                        <i class="fas fa-location-arrow"></i>
+                        <span>{{user.location}}</span>
+                        <div class="mapouter">
+                            <iframe id="gmap_canvas"
+                                :src="'https://maps.google.com/maps?q='+user.location+'&t=&z=13&ie=UTF8&iwloc=&output=embed'"
+                                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                            </iframe>
+                        </div>
+                    </div>
+                    <div v-if="user.email">
+                        <h4>Email</h4>
+                        <a :href="'mailto:'+user.email">{{user.email}}</a>
+                    </div>
+                </div>
+
+                <div v-if="user.orgs">
+                    <hr>
+                    <h4>Organizations</h4>
+                    <div class="organizations">
+                        <div v-for="organization in user.orgs">
+                            <button class="btn" v-on:click="setAndGetUser(organization.login)">
+                                <img :src="organization.avatar_url" :alt="organization.description"
+                                    class="rounded-circle">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <h4 v-if="user.repos">Projects</h4>
+                <div v-if="user.repos">
+                    <div v-for="repo in user.repos" class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{repo.full_name}}</h5>
+                            <p class="card-text"><span v-if="repo.archived" class="badge badge-warning">Archived</span> {{repo.description}}</p>
+                            <button target="_blank" class="btn btn-primary" v-on:click="getReadme($event, repo)">Get Readme</button>
+                            <article class="markdown-body" v-html="repo.readme">
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" v-else>
+        <div class="row">
+            User not right, search again.
+        </div>
+    </div>
+
+
+    <div v-if="loading" id="loading"></div>
+</div>
